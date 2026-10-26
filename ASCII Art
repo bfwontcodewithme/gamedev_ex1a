@@ -1,0 +1,65 @@
+using System;
+using System.Linq;
+using System.IO;
+using System.Text;
+using System.Collections;
+using System.Collections.Generic;
+
+/**
+ * Auto-generated code below aims at helping you parse
+ * the standard input according to the problem statement.
+ **/
+class Solution
+{
+    static void Main(string[] args)
+    {
+        int L = int.Parse(Console.ReadLine());
+        int H = int.Parse(Console.ReadLine());
+        string T = Console.ReadLine();
+        if (string.IsNullOrEmpty(T))
+        {
+            T = "";
+        }
+        T = T.ToUpper();
+        string[] font = new string[H];
+        for (int i = 0; i < H; i++)
+        {
+            font[i] = Console.ReadLine();
+        }
+        string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ?";
+        StringBuilder[] outputRows = new StringBuilder[H];
+        for (int i = 0; i < H; i++)
+        {
+            outputRows[i] = new StringBuilder();
+        }
+        foreach (char c in T)
+        {
+            // Find which letter this is (index 0-25, or 26 for ?)
+            int letterIndex = alphabet.IndexOf(c);
+            if (letterIndex == -1) letterIndex = 26; // Unknown char → ?
+            
+            // Calculate starting column for this letter
+            int colStart = letterIndex * L;
+            
+            // Append this letter's portion to each output row
+            for (int row = 0; row < H; row++)
+            {
+                // Guard against malformed input
+                if (font[row] != null && colStart + L <= font[row].Length)
+                {
+                    outputRows[row].Append(font[row], colStart, L);
+                }
+                else
+                {
+                    outputRows[row].Append(new string(' ', L));
+                }
+            }
+        }
+        
+
+        for (int i = 0; i < H; i++)
+        {
+            Console.WriteLine(outputRows[i].ToString());
+        }
+    }
+}
