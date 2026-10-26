@@ -1,0 +1,52 @@
+using System;
+
+class Player
+{
+    static void Main(string[] args)
+    {
+        string[] inputs = Console.ReadLine().Split(' ');
+        int nbFloors = int.Parse(inputs[0]);
+        int width = int.Parse(inputs[1]);
+        int nbRounds = int.Parse(inputs[2]);
+        int exitFloor = int.Parse(inputs[3]);
+        int exitPos = int.Parse(inputs[4]);
+        int nbTotalClones = int.Parse(inputs[5]);
+        int nbAdditionalElevators = int.Parse(inputs[6]);
+        int nbElevators = int.Parse(inputs[7]);
+
+        // target[f] = x position the clones must reach on floor f
+        int[] target = new int[nbFloors];
+        for (int i = 0; i < nbElevators; i++)
+        {
+            inputs = Console.ReadLine().Split(' ');
+            int elevatorFloor = int.Parse(inputs[0]);
+            int elevatorPos = int.Parse(inputs[1]);
+            target[elevatorFloor] = elevatorPos;
+        }
+        target[exitFloor] = exitPos;
+
+        // game loop
+        while (true)
+        {
+            inputs = Console.ReadLine().Split(' ');
+            int cloneFloor = int.Parse(inputs[0]);
+            int clonePos = int.Parse(inputs[1]);
+            string direction = inputs[2];
+
+            string action = "WAIT";
+
+            // cloneFloor == -1 means no leading clone this turn
+            if (cloneFloor >= 0 && clonePos >= 0)
+            {
+                int t = target[cloneFloor];
+                bool wrongWay =
+                    (direction == "RIGHT" && clonePos > t) ||
+                    (direction == "LEFT" && clonePos < t);
+
+                if (wrongWay) action = "BLOCK";
+            }
+
+            Console.WriteLine(action);
+        }
+    }
+}
