@@ -1,0 +1,47 @@
+using System;
+using System.Linq;
+using System.IO;
+using System.Text;
+using System.Collections;
+using System.Collections.Generic;
+using System.Globalization;
+
+/**
+ * Auto-generated code below aims at helping you parse
+ * the standard input according to the problem statement.
+ **/
+class Solution
+{
+    static void Main(string[] args)
+    {
+        var ci = CultureInfo.InvariantCulture;
+
+        double lon = double.Parse(Console.ReadLine().Replace(',', '.'), ci);
+        double lat = double.Parse(Console.ReadLine().Replace(',', '.'), ci);
+        int N = int.Parse(Console.ReadLine());
+
+        string bestName = "";
+        double bestDist = double.MaxValue;
+
+        for (int i = 0; i < N; i++)
+        {
+            string[] f = Console.ReadLine().Split(';');
+
+            string name = f[1];
+            double dLon = double.Parse(f[4].Replace(',', '.'), ci);
+            double dLat = double.Parse(f[5].Replace(',', '.'), ci);
+
+            double x = (dLon - lon) * Math.Cos((lat + dLat) / 2 * Math.PI / 180);
+            double y = dLat - lat;
+            double dist = Math.Sqrt(x * x + y * y) * 6371;
+
+            if (dist < bestDist)
+            {
+                bestDist = dist;
+                bestName = name;
+            }
+        }
+
+        Console.WriteLine(bestName);
+    }
+}
